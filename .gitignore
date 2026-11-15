@@ -1,0 +1,5 @@
+.env
+targets.yaml
+logs/
+__pycache__/
+.venv/

@@ -1,0 +1,39 @@
+# Copy this to targets.yaml and edit. targets.yaml is git-ignored.
+#
+# Times are in `timezone`. Dates are YYYY-MM-DD.
+
+party_size: 2
+timezone: America/New_York
+
+poll_interval_ms: 250   # how often to re-check availability during a drop
+poll_duration_s: 90     # give up this many seconds after the drop moment
+
+targets:
+  - name: Example Trattoria          # just a label for logs/notifications
+    venue_id: 1234                   # from the Resy URL / DevTools (see README)
+    dates: ["2026-11-14", "2026-11-15"]
+    time_window: ["18:30", "20:30"]        # what you actually want
+    fallback_window: ["17:30", "21:30"]    # what you'd settle for...
+    fallback_after: 8                      # ...if nothing better after N seconds
+    seat_types: ["Dining Room", "Bar Seat"]  # as Resy labels them on the page; [] = any
+    release: "30 days ahead at 10:00"      # when this venue drops tables
+    max_deposit_usd: 0                     # deposit charged at booking; late-cancel fees don't count
+
+  # A venue with captcha on (check shows "captcha: ON"). The bot can't finish
+  # the booking here, so it finds the slot and pings your phone with a link;
+  # you tap, solve the captcha, confirm. Be awake and near your phone at drop time.
+  - name: Tatiana
+    venue_id: 65452
+    dates: ["2026-11-07"]
+    time_window: ["18:30", "20:30"]
+    fallback_window: ["17:00", "22:00"]
+    fallback_after: 5
+    release: "30 days ahead at 10:00"      # VERIFY on Tatiana's Resy page
+    book_mode: manual
+
+  - name: Weekly Batch Place
+    venue_id: 5678
+    dates: ["2026-11-20"]
+    time_window: ["19:00", "21:00"]
+    release: "every monday at 10:00"
+    max_deposit_usd: 50
