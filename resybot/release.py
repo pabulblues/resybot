@@ -8,6 +8,9 @@ Supported rule formats (case-insensitive):
     "14 days ahead at 00:00"      midnight drops
     "every monday at 10:00"       weekly batch release: a whole week opens
                                   at once on that weekday
+    "monthly on the 15th at 12:00"
+                                  monthly batch: the whole NEXT month opens
+                                  on that day of the month at that time
     "now"                         no scheduled drop; only the cancellation
                                   watcher makes sense for this target
 
@@ -25,6 +28,7 @@ WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", 
 
 _DAYS_AHEAD = re.compile(r"^\s*(\d+)\s*days?\s*ahead\s*at\s*(\d{1,2}):(\d{2})\s*$", re.I)
 _WEEKLY = re.compile(r"^\s*every\s+([a-z]+)\s*at\s*(\d{1,2}):(\d{2})\s*$", re.I)
+_MONTHLY = re.compile(r"^\s*monthly\s+on\s+(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)?\s*at\s*(\d{1,2}):(\d{2})\s*$", re.I)
 _NOW = re.compile(r"^\s*now\s*$", re.I)
 
 
@@ -57,6 +61,7 @@ class ReleaseRule:
         self.kind: str
         self.days_ahead: int | None = None
         self.weekday: int | None = None
+        self.month_day: int | None = None
         self.at: time | None = None
 
         if _NOW.match(rule):
@@ -72,10 +77,17 @@ class ReleaseRule:
             self.kind = "weekly"
             self.weekday = WEEKDAYS.index(wd)
             self.at = time(int(m.group(2)), int(m.group(3)))
+        elif m := _MONTHLY.match(rule):
+            self.kind = "monthly"
+            self.month_day = int(m.group(1))
+            if not 1 <= self.month_day <= 28:
+                raise ValueError("Monthly release day must be 1–28.")
+            self.at = time(int(m.group(2)), int(m.group(3)))
         else:
             raise ValueError(
                 f"Can't parse release rule {rule!r}. "
-                "Use '30 days ahead at 10:00', 'every monday at 10:00', or 'now'."
+                "Use '30 days ahead at 10:00', 'every monday at 10:00', "
+                "'monthly on the 15th at 12:00', or 'now'."
             )
 
     # ------------------------------------------------------------------
@@ -113,6 +125,12 @@ class ReleaseRule:
             delta = (d.weekday() - self.weekday) % 7
             batch_day = d - timedelta(days=delta)
             return datetime.combine(batch_day, self.at, tzinfo=self.tz)
+
+        if self.kind == "monthly":
+            # Date d opens on `month_day` of the month BEFORE d's month.
+            first = d.replace(day=1)
+            prev = (first - timedelta(days=1)).replace(day=self.month_day)
+            return datetime.combine(prev, self.at, tzinfo=self.tz)
 
         return None
 

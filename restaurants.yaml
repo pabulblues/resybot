@@ -1,0 +1,873 @@
+# Restaurant catalog: reference data for adding targets quickly.
+# `release` is read from Resy's own release stamps; treat it as a strong hint.
+
+restaurants:
+- name: 4 Charles Prime Rib
+  venue_id: 834
+  url_slug: 4-charles-prime-rib
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Steakhouse
+  release: 20 days ahead at 09:00
+  release_days: 20
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Albi
+  venue_id: 5101
+  url_slug: albi
+  city: washington-dc
+  neighborhood: Navy Yard
+  cuisine: null
+  release: null
+  release_days: 40
+  captcha: null
+  source: autores.io
+  checked: '2026-11-21'
+- name: Ambassadors Clubhouse New York
+  venue_id: 94741
+  url_slug: ambassadors-clubhouse-new-york
+  city: new-york-ny
+  neighborhood: NoMad
+  cuisine: North Indian
+  release: monthly on the 15th at 12:00
+  release_days: null
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Anjelica's Restaurant
+  venue_id: 54820
+  url_slug: anjelicas-restaurant
+  city: sea-bright-nj
+  neighborhood: Shore
+  cuisine: null
+  release: 29 days ahead at 11:00
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bangkok Supper Club
+  venue_id: 73418
+  url_slug: bangkok-supper-club
+  city: new-york-ny
+  neighborhood: Meatpacking District
+  cuisine: Thai
+  release: 28 days ahead at 00:00
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bar Chimera
+  venue_id: 95768
+  url_slug: bar-chimera
+  city: new-york-ny
+  neighborhood: Midtown East
+  cuisine: American
+  release: 13 days ahead at 10:00
+  release_days: 12
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bavette's Bar & Boeuf - Chicago
+  venue_id: 4408
+  url_slug: bavettes-bar-and-boeuf
+  city: chicago-il
+  neighborhood: River North
+  cuisine: null
+  release: null
+  release_days: 19
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Blue Box Café by Daniel Boulud - New York
+  venue_id: 70161
+  url_slug: bluebox-cafe-by-daniel-boulud
+  city: new-york-ny
+  neighborhood: Midtown
+  cuisine: French - American
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bong
+  venue_id: 86413
+  url_slug: bong
+  city: new-york-ny
+  neighborhood: Crown Heights
+  cuisine: Cambodian
+  release: 21 days ahead at 00:00
+  release_days: 21
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Borgo
+  venue_id: 84290
+  url_slug: borgo
+  city: new-york-ny
+  neighborhood: Flatiron
+  cuisine: Italian
+  release: 20 days ahead at 10:00
+  release_days: 19
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bridges
+  venue_id: 83681
+  url_slug: bridges
+  city: new-york-ny
+  neighborhood: Chinatown
+  cuisine: French
+  release: 20 days ahead at 12:00
+  release_days: 19
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Bungalow
+  venue_id: 80201
+  url_slug: bungalow-ny
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Indian
+  release: 20 days ahead at 11:00
+  release_days: 20
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Carbone
+  venue_id: 6194
+  url_slug: carbone
+  city: new-york-ny
+  neighborhood: Greenwich Village
+  cuisine: Italian
+  release: 30 days ahead at 10:00
+  release_days: 30
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Carbone Miami
+  venue_id: 43225
+  url_slug: carbone-miami
+  city: miami-fl
+  neighborhood: South Beach
+  cuisine: Italian
+  release: 30 days ahead at 10:00
+  release_days: 40
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: Clemente Bar
+  venue_id: 84216
+  url_slug: clemente-bar
+  city: new-york-ny
+  neighborhood: Flatiron
+  cuisine: Contemporary American
+  release: 21 days ahead at 10:00
+  release_days: 40
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: COQODAQ
+  venue_id: 76033
+  url_slug: coqodaq
+  city: new-york-ny
+  neighborhood: Flatiron District
+  cuisine: Korean American
+  release: 13 days ahead at 10:00
+  release_days: 24
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: COTE Miami
+  venue_id: 72270
+  url_slug: cote-mia
+  city: miami-fl
+  neighborhood: Design District
+  cuisine: Korean
+  release: 29 days ahead at 10:00
+  release_days: 28
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: Dōgon by Kwame Onwuachi
+  venue_id: 83393
+  url_slug: dogon-by-kwame-onwuachi
+  city: washington-dc
+  neighborhood: Southwest Washington
+  cuisine: null
+  release: 27 days ahead at 12:00
+  release_days: 26
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Eyval
+  venue_id: 59419
+  url_slug: eyval
+  city: new-york-ny
+  neighborhood: Bushwick
+  cuisine: Persian
+  release: 20 days ahead at 00:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Fish Cheeks NoHo
+  venue_id: 693
+  url_slug: fish-cheeks
+  city: new-york-ny
+  neighborhood: Bowery
+  cuisine: Thai
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Golden Diner
+  venue_id: 9520
+  url_slug: golden-diner
+  city: new-york-ny
+  neighborhood: Chinatown/LES
+  cuisine: Asian American
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Ha's Snack Bar
+  venue_id: 85855
+  url_slug: has-snack-bar
+  city: new-york-ny
+  neighborhood: Lower East Side
+  cuisine: Vietnamese
+  release: 20 days ahead at 12:00
+  release_days: 19
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: I Cavallini
+  venue_id: 90079
+  url_slug: i-cavallini
+  city: new-york-ny
+  neighborhood: Williamsburg
+  cuisine: Italian
+  release: 14 days ahead at 08:00
+  release_days: 14
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: I Sodi
+  venue_id: 443
+  url_slug: i-sodi
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Italian
+  release: 13 days ahead at 10:00
+  release_days: 13
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: ITO NYC
+  venue_id: 54504
+  url_slug: ito
+  city: new-york-ny
+  neighborhood: Tribeca
+  cuisine: Sushi
+  release: 21 days ahead at 12:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Jeju Noodle Bar
+  venue_id: 1543
+  url_slug: jeju-noodle-bar
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: null
+  release: null
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Jeju Noodle Bar Nolita
+  venue_id: 99107
+  url_slug: jeju-noodle-bar-nolita
+  city: new-york-ny
+  neighborhood: Nolita
+  cuisine: Korean American
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: JUA
+  venue_id: 8266
+  url_slug: jua
+  city: new-york-ny
+  neighborhood: Flatiron District
+  cuisine: Korean
+  release: 20 days ahead at 00:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Korai Kitchen
+  venue_id: 79396
+  url_slug: korai-kitchen
+  city: jersey-city-nj
+  neighborhood: Journal Square
+  cuisine: null
+  release: null
+  release_days: 40
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: L'Artusi
+  venue_id: 25973
+  url_slug: lartusi-ny
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Italian
+  release: 14 days ahead at 09:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Laser Wolf Brooklyn
+  venue_id: 58848
+  url_slug: laser-wolf-brooklyn
+  city: new-york-ny
+  neighborhood: Williamsburg
+  cuisine: Israeli
+  release: 21 days ahead at 10:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Le Bar Penelope
+  venue_id: 84545
+  url_slug: le-bar-penelope
+  city: new-york-ny
+  neighborhood: Lenox Hill
+  cuisine: Raw Bar
+  release: 59 days ahead at 00:00
+  release_days: 59
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Le Café Louis Vuitton
+  venue_id: 85214
+  url_slug: le-cafe-louis-vuitton
+  city: new-york-ny
+  neighborhood: Midtown East
+  cuisine: French - American
+  release: 27 days ahead at 00:00
+  release_days: 27
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Lei
+  venue_id: 89991
+  url_slug: lei
+  city: new-york-ny
+  neighborhood: Chinatown
+  cuisine: Chinese
+  release: 13 days ahead at 09:00
+  release_days: 12
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Lilia
+  venue_id: 418
+  url_slug: lilia
+  city: new-york-ny
+  neighborhood: Williamsburg
+  cuisine: Italian
+  release: 27 days ahead at 10:00
+  release_days: 26
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: Madeline's Martini
+  venue_id: 73053
+  url_slug: madelines-martini
+  city: new-york-ny
+  neighborhood: Alphabet City
+  cuisine: Cocktail Bar
+  release: 13 days ahead at 00:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Mandolin Aegean Bistro Miami
+  venue_id: 9999
+  url_slug: mandolin-aegean-bistro
+  city: miami-fl
+  neighborhood: Design District
+  cuisine: Greek
+  release: 59 days ahead at 09:00
+  release_days: 58
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Marcel 945 Madison
+  venue_id: 95316
+  url_slug: marcel
+  city: new-york-ny
+  neighborhood: Upper East Side
+  cuisine: null
+  release: 27 days ahead at 09:00
+  release_days: 26
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note: 'check: autores lists ''Marcel''; matched to Marcel 945 Madison'
+- name: Minetta Tavern
+  venue_id: 9846
+  url_slug: minetta-tavern
+  city: new-york-ny
+  neighborhood: Greenwich Village
+  cuisine: French
+  release: 30 days ahead at 00:00
+  release_days: 30
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Misi
+  venue_id: 3015
+  url_slug: misi
+  city: new-york-ny
+  neighborhood: Williamsburg
+  cuisine: Italian
+  release: 27 days ahead at 10:00
+  release_days: 26
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: Monkey Bar
+  venue_id: 60058
+  url_slug: monkey-bar-nyc
+  city: new-york-ny
+  neighborhood: Midtown East
+  cuisine: American
+  release: 20 days ahead at 09:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Nom Wah Tea Parlor
+  venue_id: 483
+  url_slug: nom-wah-tea-parlor
+  city: new-york-ny
+  neighborhood: Chinatown
+  cuisine: Dim Sum
+  release: null
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Nowon East Village
+  venue_id: 8541
+  url_slug: nowon-east-village
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Korean
+  release: 27 days ahead at 00:00
+  release_days: 27
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Odo East Village
+  venue_id: 94758
+  url_slug: odo-east-village
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Japanese
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: One White Street
+  venue_id: 49137
+  url_slug: one-white-street
+  city: new-york-ny
+  neighborhood: Tribeca
+  cuisine: American
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: one4one Sports Club & Lounge
+  venue_id: 93507
+  url_slug: one-4-one-Sports-Club-&-Lounge
+  city: new-york-ny
+  neighborhood: Bowery
+  cuisine: null
+  release: null
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note: 'check: matched by name only'
+- name: Overstory
+  venue_id: 53052
+  url_slug: overstory
+  city: new-york-ny
+  neighborhood: Financial District
+  cuisine: Cocktail Bar
+  release: null
+  release_days: 40
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Pastis
+  venue_id: 6484
+  url_slug: pastis
+  city: new-york-ny
+  neighborhood: Meatpacking District
+  cuisine: French
+  release: 27 days ahead at 10:00
+  release_days: 26
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Penny
+  venue_id: 79460
+  url_slug: penny
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Seafood
+  release: 14 days ahead at 09:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Please Don't Tell (PDT)
+  venue_id: 10500
+  url_slug: pdt
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: null
+  release: 14 days ahead at 15:00
+  release_days: 12
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Raf's
+  venue_id: 65679
+  url_slug: rafs
+  city: new-york-ny
+  neighborhood: NoHo
+  cuisine: Italian
+  release: 13 days ahead at 09:00
+  release_days: 33
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Raoul's
+  venue_id: 7241
+  url_slug: raoulsrestaurant
+  city: new-york-ny
+  neighborhood: Soho
+  cuisine: French
+  release: 30 days ahead at 08:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Rosella
+  venue_id: 65348
+  url_slug: rosella
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Sushi
+  release: 28 days ahead at 23:59
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Rubirosa
+  venue_id: 466
+  url_slug: rubirosa
+  city: new-york-ny
+  neighborhood: NoLita
+  cuisine: Italian
+  release: 7 days ahead at 00:00
+  release_days: 7
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Sadelle's
+  venue_id: 29967
+  url_slug: sadelles
+  city: new-york-ny
+  neighborhood: SOHO
+  cuisine: Brunch
+  release: 41 days ahead at 10:00
+  release_days: 40
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: schmuck.
+  venue_id: 84430
+  url_slug: schmuck-nyc
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Cocktail Bar
+  release: 14 days ahead at 10:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Shabu Tatsu
+  venue_id: 36758
+  url_slug: shabu-tatsu
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: Japanese
+  release: 13 days ahead at 00:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Shukette
+  venue_id: 8579
+  url_slug: shukette
+  city: new-york-ny
+  neighborhood: Chelsea
+  cuisine: Middle Eastern
+  release: 13 days ahead at 09:00
+  release_days: 12
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Sixty Three Clinton
+  venue_id: 52711
+  url_slug: sixty-three-clinton
+  city: new-york-ny
+  neighborhood: Lower East Side
+  cuisine: New American
+  release: 20 days ahead at 00:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Somssi
+  venue_id: 96941
+  url_slug: somssi
+  city: new-york-ny
+  neighborhood: Greenwich Village
+  cuisine: Modern Pan-Asian
+  release: 14 days ahead at 10:00
+  release_days: 14
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Straker's NYC
+  venue_id: 97120
+  url_slug: strakers-nyc
+  city: new-york-ny
+  neighborhood: SoHo
+  cuisine: Seasonal
+  release: 14 days ahead at 10:00
+  release_days: 14
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Sunny's Steakhouse
+  venue_id: 84543
+  url_slug: sunnys
+  city: miami-fl
+  neighborhood: Little River
+  cuisine: null
+  release: 29 days ahead at 12:00
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Sushi Nakazawa NY
+  venue_id: 5589
+  url_slug: sushi-nakazawa
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Sushi
+  release: 14 days ahead at 12:00
+  release_days: 13
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Sushi Yasuda
+  venue_id: 3770
+  url_slug: sushi-yasuda
+  city: new-york-ny
+  neighborhood: Midtown East
+  cuisine: Sushi
+  release: 28 days ahead at 00:00
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Szechuan Mountain House Manhattan
+  venue_id: 65673
+  url_slug: szechuan-mountain-house-manhattan
+  city: new-york-ny
+  neighborhood: East Village
+  cuisine: null
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+  note: 'check: there''s also a Flushing branch (venue 92882)'
+- name: Taikun Sushi NYC
+  venue_id: 50244
+  url_slug: taikun-sushi
+  city: new-york-ny
+  neighborhood: Lower East Side
+  cuisine: Sushi
+  release: 20 days ahead at 00:00
+  release_days: 20
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: TATIANA, By Kwame Onwuachi
+  venue_id: 65452
+  url_slug: tatiana
+  city: new-york-ny
+  neighborhood: Lincoln Center
+  cuisine: Afro Caribbean
+  release: 27 days ahead at 12:00
+  release_days: 27
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Thai Diner
+  venue_id: 49453
+  url_slug: thai-diner
+  city: new-york-ny
+  neighborhood: Nolita
+  cuisine: Thai
+  release: null
+  release_days: 28
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: The Commerce Inn
+  venue_id: 53342
+  url_slug: the-commerce-inn
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: American
+  release: 13 days ahead at 09:00
+  release_days: 12
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+- name: The Coop at Double Chicken Please
+  venue_id: 42534
+  url_slug: double-chicken-please
+  city: new-york-ny
+  neighborhood: Lower East Side
+  cuisine: Contemporary American
+  release: 6 days ahead at 00:00
+  release_days: 6
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: The Four Horsemen
+  venue_id: 2492
+  url_slug: the-four-horsemen
+  city: new-york-ny
+  neighborhood: Williamsburg
+  cuisine: New American
+  release: 29 days ahead at 07:00
+  release_days: 29
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: The Nines
+  venue_id: 7490
+  url_slug: thenines
+  city: new-york-ny
+  neighborhood: NoHo
+  cuisine: Contemporary American
+  release: 13 days ahead at 00:00
+  release_days: 32
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Theodora
+  venue_id: 73589
+  url_slug: theodora
+  city: new-york-ny
+  neighborhood: Fort Greene
+  cuisine: Mediterranean
+  release: 30 days ahead at 09:00
+  release_days: 30
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: confirmed by the Nov 21 drop (tables for Dec 21 opened at 9:00:00)
+- name: Torrisi
+  venue_id: 64593
+  url_slug: torrisi
+  city: new-york-ny
+  neighborhood: Nolita
+  cuisine: null
+  release: 30 days ahead at 10:00
+  release_days: 30
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)
+- name: Umeko
+  venue_id: 94947
+  url_slug: umeko
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Sushi
+  release: 29 days ahead at 00:00
+  release_days: 29
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Una Pizza Napoletana
+  venue_id: 6066
+  url_slug: una-pizza-napoletana
+  city: new-york-ny
+  neighborhood: Lower Manhattan
+  cuisine: Pizza
+  release: null
+  release_days: -3
+  captcha: false
+  source: autores.io
+  checked: '2026-11-21'
+- name: Via Carota
+  venue_id: 2567
+  url_slug: via-carota
+  city: new-york-ny
+  neighborhood: West Village
+  cuisine: Italian
+  release: 30 days ahead at 10:00
+  release_days: 30
+  captcha: true
+  source: autores.io
+  checked: '2026-11-21'
+  note_release: from the restaurant's Resy page (you told me, 2026-11-21)

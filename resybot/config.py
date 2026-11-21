@@ -23,20 +23,25 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 # Secrets (from .env, never from targets.yaml)
 # ---------------------------------------------------------------------------
 
+# Resy's public website API key: the same for every visitor to resy.com (it's in
+# the site's own JavaScript). Not a secret; override with RESY_API_KEY if Resy changes it.
+PUBLIC_API_KEY = "VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"
+
+
 class Secrets(BaseModel):
     """Loaded from environment variables / .env. Never logged."""
     resy_auth_token: str
     resy_api_key: str
-    ntfy_topic: Optional[str] = None
 
     @classmethod
     def from_env(cls, dotenv_path: Path | None = None) -> "Secrets":
-        load_dotenv(dotenv_path)
+        # override=True so a token updated in .env (e.g. via Telegram /token)
+        # is picked up by the long-running server without a restart.
+        load_dotenv(dotenv_path, override=True)
         try:
             return cls(
                 resy_auth_token=os.environ["RESY_AUTH_TOKEN"],
-                resy_api_key=os.environ["RESY_API_KEY"],
-                ntfy_topic=os.environ.get("NTFY_TOPIC") or None,
+                resy_api_key=os.environ.get("RESY_API_KEY") or PUBLIC_API_KEY,
             )
         except KeyError as e:
             raise SystemExit(
@@ -69,6 +74,9 @@ class Target(BaseModel):
     book_mode: str = Field(default="auto", pattern="^(auto|manual)$")
     url_slug: Optional[str] = None                       # e.g. "tatiana"; used to build the link
     city: str = "new-york-ny"                            # resy.com/cities/<city>/venues/<slug>
+    # Used by `serve` (the always-on scheduler, menus and Telegram):
+    armed: bool = True                                   # false = skip this target
+    live: bool = False                                   # false = dry run under `serve`
 
     # ---- validators -------------------------------------------------------
 
@@ -116,6 +124,7 @@ class Config(BaseModel):
     timezone: str = "America/New_York"   # release rules are read in this tz
     poll_interval_ms: int = Field(default=250, ge=100)
     poll_duration_s: int = Field(default=90, ge=5)
+    watch_every_s: int = Field(default=120, ge=60)   # cancellation checks (daytime pace)
     targets: list[Target] = Field(min_length=1)
 
     @model_validator(mode="after")

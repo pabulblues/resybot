@@ -23,7 +23,7 @@ import time as _time
 from dataclasses import dataclass, field
 from datetime import date, datetime, time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 import httpx
 
@@ -122,9 +122,12 @@ class ResyClient:
         dry_run: bool = True,
         log_dir: Path | str = "logs",
         timeout_s: float = 4.0,
+        refresh: "Callable[[], str] | None" = None,
     ):
         self.dry_run = dry_run
         self._auth_token = auth_token
+        # Called on 401/419 to get a fresh token (auth.refresh_token). Optional.
+        self._refresh = refresh
         self._log_path = Path(log_dir) / "resy.jsonl"
         self._log_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -155,6 +158,7 @@ class ResyClient:
         slammed and one failed request must not kill the whole run.
         """
         last_exc: Exception | None = None
+        refreshed = False
         for attempt in range(retries + 1):
             t0 = _time.perf_counter()
             try:
@@ -167,8 +171,13 @@ class ResyClient:
                     body = r.text
                 self._jsonl(method, path, kw, r.status_code, body, ms)
 
-                if r.status_code == 401:
-                    raise ResyError("401 Unauthorized — your RESY_AUTH_TOKEN expired. Re-copy it from DevTools.")
+                if r.status_code in (401, 419):
+                    if self._refresh and not refreshed:
+                        refreshed = True
+                        self._set_token(self._refresh())   # log in again, then retry this request
+                        continue
+                    raise ResyError("401 Unauthorized: your Resy login expired. "
+                                    "Use “Log in with email & password” in the menu (./resy).")
                 if r.status_code in (429, 500, 502, 503, 504):
                     raise httpx.HTTPStatusError(f"{r.status_code}", request=r.request, response=r)
                 if r.status_code >= 400:
@@ -181,6 +190,11 @@ class ResyClient:
                 # short, jittered backoff: 0.15s, 0.3s, 0.6s (+ noise)
                 _time.sleep(0.15 * (2 ** attempt) + random.uniform(0, 0.05))
         raise ResyError(f"{method} {path} failed after {retries + 1} attempts: {last_exc}")
+
+    def _set_token(self, token: str) -> None:
+        self._auth_token = token
+        self._http.headers["X-Resy-Auth-Token"] = token
+        self._http.headers["X-Resy-Universal-Auth"] = token
 
     def _jsonl(self, method, path, kw, status, body, ms):
         rec = {

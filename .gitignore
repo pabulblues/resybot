@@ -3,3 +3,8 @@ targets.yaml
 logs/
 __pycache__/
 .venv/
+targets.import.json
+.telegram.json
+.DS_Store
+history.jsonl
+.resybot-state.json

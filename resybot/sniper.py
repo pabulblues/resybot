@@ -7,10 +7,12 @@ possibly several dates). The CLI creates one per upcoming drop.
 from __future__ import annotations
 
 import logging
+import threading
 import time as _time
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from . import history
 from .config import Config, Target
 from .notify import Notifier
 from .ranker import choose
@@ -21,8 +23,10 @@ log = logging.getLogger("resybot.sniper")
 
 
 class Sniper:
-    def __init__(self, cfg: Config, target: Target, drop: Drop, client: ResyClient, notifier: Notifier):
+    def __init__(self, cfg: Config, target: Target, drop: Drop, client: ResyClient, notifier: Notifier,
+                 cancel: threading.Event | None = None):
         self.cfg = cfg
+        self.cancel = cancel or threading.Event()   # set() to stand down (e.g. target disarmed)
         self.target = target
         self.drop = drop
         self.client = client
@@ -33,14 +37,14 @@ class Sniper:
 
     def wait_for_drop(self) -> None:
         """Coarse sleep until T-5s, then spin on the clock for precision."""
-        while True:
+        while not self.cancel.is_set():
             remaining = (self.drop.at - datetime.now(self.tz)).total_seconds()
             if remaining <= 0:
                 return
             if remaining > 5:
                 if remaining > 60:
                     log.info("%s: drop in %s", self.target.name, timedelta(seconds=int(remaining)))
-                _time.sleep(min(remaining - 5, 30))
+                self.cancel.wait(min(remaining - 5, 30))
                 if 3 <= remaining - 5 <= 30:
                     self._warm_up()
             else:
@@ -60,6 +64,9 @@ class Sniper:
         t = self.target
         log.info("%s: armed for %s", t.name, self.drop)
         self.wait_for_drop()
+        if self.cancel.is_set():
+            log.info("%s: stood down before the drop", t.name)
+            return None
         log.info("%s: GO", t.name)
 
         t0 = _time.perf_counter()
@@ -67,9 +74,11 @@ class Sniper:
         interval = self.cfg.poll_interval_ms / 1000
         refused: set[Slot] = set()     # slots we tried and were told no (deposit, etc.)
         last_pinged: Slot | None = None  # manual mode: what we last told you about
+        self.pinged = False
+        self.slot: str | None = None      # what it found / booked, for the menus
         polls = 0
 
-        while _time.perf_counter() < deadline:
+        while _time.perf_counter() < deadline and not self.cancel.is_set():
             elapsed = _time.perf_counter() - t0
             slots: list[Slot] = []
             for day in self.drop.dates:
@@ -94,6 +103,10 @@ class Sniper:
                     url = self._page_url(pick)
                     log.info("%s: FOUND %s (%.1fs after drop) → %s", t.name, pick.label, elapsed, url)
                     self.notifier.found(t.name, pick.label, url)
+                    if last_pinged is None:
+                        self.slot = pick.label
+                    if last_pinged is None and not self.client.dry_run:
+                        history.record("alert", t.name, slot=pick.label, party=t.party_size, url=url)
                     last_pinged = pick
                 _time.sleep(interval)
                 continue
@@ -113,15 +126,23 @@ class Sniper:
                 continue
 
             log.info("%s: BOOKED %s → %s", t.name, pick.label, booking.reservation_id)
+            self.slot = pick.label
+            if not self.client.dry_run:
+                history.record("booked", t.name, slot=pick.label, reservation=booking.reservation_id,
+                               party=t.party_size, url=self._page_url(pick))
             self.notifier.booked(t.name, pick.label, booking.reservation_id)
             return booking      # <- stop. Never book twice.
 
         if t.book_mode == "manual" and last_pinged is not None:
+            self.pinged = True
             log.info("%s: manual mode — stopped watching after %ds; last slot sent: %s",
                      t.name, self.cfg.poll_duration_s, last_pinged.label)
             return None
         msg = f"nothing in window after {self.cfg.poll_duration_s}s ({polls} polls)"
         log.warning("%s: %s", t.name, msg)
+        if not self.client.dry_run and not self.cancel.is_set():
+            history.record("missed", t.name, party=t.party_size,
+                           note=", ".join(f"{d:%a %b %-d}" for d in self.drop.dates))
         self.notifier.failed(t.name, msg)
         return None
 

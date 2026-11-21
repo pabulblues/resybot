@@ -1,6 +1,9 @@
 """
 Command-line entry point.  Usage:
 
+    ./resy                                  # arrow-key menus (same as no arguments)
+    python -m resybot serve                 # always-on scheduler (the server mode)
+    python -m resybot serve --telegram      # ...controlled from Telegram
     python -m resybot check                 # token OK? next drops? current availability?
     python -m resybot venue <slug-or-url>   # look up a venue_id for targets.yaml
     python -m resybot run                   # DRY RUN: full routine, stops before booking
@@ -25,22 +28,26 @@ from .resy import ResyClient, ResyError
 from .sniper import Sniper
 
 
-def _setup_logging(verbose: bool):
+def _setup_logging(verbose: bool, quiet: bool = False):
     Path("logs").mkdir(exist_ok=True)
     fmt = "%(asctime)s.%(msecs)03d %(levelname)-7s %(message)s"
+    handlers: list[logging.Handler] = [logging.FileHandler("logs/resybot.log")]
+    if not quiet:   # the menus draw their own screen; log only to the file
+        handlers.insert(0, logging.StreamHandler(sys.stdout))
     logging.basicConfig(
         level=logging.DEBUG if verbose else logging.INFO,
         format=fmt,
         datefmt="%H:%M:%S",
-        handlers=[logging.StreamHandler(sys.stdout), logging.FileHandler("logs/resybot.log")],
+        handlers=handlers,
     )
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 
 def _client(dry_run: bool) -> tuple[ResyClient, Secrets]:
-    sec = Secrets.from_env()
-    return ResyClient(sec.resy_auth_token, sec.resy_api_key, dry_run=dry_run), sec
+    from . import service
+    c = service.client(dry_run=dry_run)     # auto-refreshes an expired token if a password is saved
+    return c, Secrets.from_env()
 
 
 # ---------------------------------------------------------------------------
@@ -100,7 +107,6 @@ def cmd_check(args):
             for rule in sorted(inferred):
                 mark = "✓ matches" if rule.lower() == t.release.lower() else "← differs from your rule"
                 print(f"     Resy's release stamp suggests: '{rule}'  {mark}")
-    print("\nNtfy topic:", "set" if sec.ntfy_topic else "not set (no push notifications)")
     return 0
 
 
@@ -124,7 +130,7 @@ def cmd_run(args):
     cfg = Config.load(args.config)
     dry_run = not args.live
     client, sec = _client(dry_run=dry_run)
-    notifier = Notifier(sec.ntfy_topic)
+    notifier = Notifier()
 
     if dry_run:
         logging.warning("DRY RUN — will stop before booking. Pass --live to book for real.")
@@ -140,6 +146,8 @@ def cmd_run(args):
     snipers: list[Sniper] = []
     for t in cfg.targets:
         if args.only and t.name.lower() != args.only.lower():
+            continue
+        if not t.armed and not args.only:
             continue
         for d in ReleaseRule(t.release, cfg.timezone).drops_for(t.dates):
             snipers.append(Sniper(cfg, t, d, client, notifier))
@@ -165,13 +173,98 @@ def cmd_run(args):
     return 0
 
 
+def cmd_serve(args):
+    """Always-on: arm every armed target's drops as they come; optional Telegram control."""
+    import os
+    from .scheduler import Scheduler
+
+    Secrets.from_env()          # fail fast if the login is missing
+    notifier = Notifier()
+    sched = Scheduler(notifier, args.config, force_dry_run=args.dry_run)
+    sched.check_login()
+    logging.info("Resy login: %s", sched.login_msg)
+
+    bot = None
+    if args.telegram:
+        try:
+            from .telegram_bot import Bot
+        except ImportError:
+            logging.error("Telegram remote control isn't included in this version.")
+            return 1
+        token = os.environ.get("TELEGRAM_BOT_TOKEN")
+        if not token:
+            logging.error("TELEGRAM_BOT_TOKEN missing from .env (see deploy/README.md).")
+            return 1
+        bot = Bot(token, sched)
+        notifier.add_channel(bot.notify_channel)
+
+    sched.start()
+    try:
+        if bot:
+            bot.run_forever()
+        else:
+            threading.Event().wait()
+    except KeyboardInterrupt:
+        logging.warning("stopped by user")
+        sched.stop()
+    return 0
+
+
+def cmd_catalog(args):
+    """Resolve a list of restaurant names on Resy and add them to restaurants.yaml."""
+    from . import catalog, service
+    entries = []
+    for line in Path(args.file).read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        name, _, hint = line.partition("|")
+        entries.append((name.strip(), hint.strip() or None))
+    c = service.client()
+
+    def progress(i, n, name, rec):
+        if rec is None:
+            print(f"[{i:3}/{n}] ✗ {name}: not on Resy (or no exact match)", flush=True)
+        elif isinstance(rec, str):
+            print(f"[{i:3}/{n}] = {name}: {rec}", flush=True)
+        else:
+            rule = rec.get("release") or (f"{rec['release_days']} days ahead (time unknown)" if rec.get("release_days") else "rule unknown")
+            print(f"[{i:3}/{n}] ✓ {name} → {rec['name']} (venue {rec['venue_id']}, {rec['city']}) · {rule}"
+                  f"{' · CAPTCHA' if rec.get('captcha') else ''}", flush=True)
+
+    added, missing = catalog.import_names(c, entries, source=args.source, on_progress=progress)
+    print(f"\nAdded {len(added)} to {catalog.CATALOG}. Not found on Resy: {len(missing)}")
+    for m in missing:
+        print(f"   - {m}")
+    return 0
+
+
+def cmd_menu(args):
+    from .tui import main as tui_main
+    return tui_main()
+
+
 # ---------------------------------------------------------------------------
 
 def main(argv=None):
     p = argparse.ArgumentParser(prog="resybot")
     p.add_argument("--config", default="targets.yaml")
     p.add_argument("-v", "--verbose", action="store_true")
-    sub = p.add_subparsers(dest="cmd", required=True)
+    sub = p.add_subparsers(dest="cmd")
+    p.set_defaults(fn=cmd_menu)
+
+    cat = sub.add_parser("catalog", help="add restaurants to restaurants.yaml from a list of names")
+    cat.add_argument("file", help="one restaurant per line: Name  or  Name|resy-slug-hint")
+    cat.add_argument("--source", default="list")
+    cat.set_defaults(fn=cmd_catalog)
+
+    m = sub.add_parser("menu", help="arrow-key menus (the default)")
+    m.set_defaults(fn=cmd_menu)
+
+    s = sub.add_parser("serve", help="always-on scheduler; arms drops as they come")
+    s.add_argument("--telegram", action="store_true", help="remote control via Telegram")
+    s.add_argument("--dry-run", action="store_true", help="never book, even targets marked live")
+    s.set_defaults(fn=cmd_serve)
 
     c = sub.add_parser("check", help="verify token, show next drops and current availability")
     c.add_argument("--no-availability", dest="availability", action="store_false")
@@ -187,7 +280,7 @@ def main(argv=None):
     r.set_defaults(fn=cmd_run)
 
     args = p.parse_args(argv)
-    _setup_logging(args.verbose)
+    _setup_logging(args.verbose, quiet=args.fn is cmd_menu)
     return args.fn(args)
 
 

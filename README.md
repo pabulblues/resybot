@@ -37,11 +37,12 @@ cp targets.example.yaml targets.yaml
 The token lasts weeks to months. If `check` ever says *401 Unauthorized*,
 repeat these steps.
 
-### Notifications (optional, 2 minutes)
+### Notifications
 
-Install the **ntfy** app on your phone. Subscribe to a topic name you make up
-(something unguessable, e.g. `siya-resy-x7q2m`). Put the same name in `.env`
-as `NTFY_TOPIC`. That's it: no account, no key.
+Nothing to set up. On your Mac you get a notification with a sound when
+something books (or doesn't). For captcha restaurants the Resy page opens
+in your browser at the drop, on the right date, so you just click the time
+and confirm.
 
 ---
 
@@ -74,12 +75,11 @@ project doesn't try to get around that. For those, set:
 ```
 
 In manual mode the bot still waits for the drop and polls, but the moment a
-slot in your window appears it sends an **urgent push to your phone with a
-link to that date on resy.com**. You tap, pick the slot, solve the captcha,
-confirm. It keeps watching for the rest of `poll_duration_s` and re-pings
-only if the best available slot changes. You need to be awake with your
-phone (or at the laptop) at drop time; the bot buys you the seconds of
-searching, not the click.
+slot in your window appears it sends an **alert on your Mac and opens that date
+on resy.com in your browser**. You click the slot, solve the captcha,
+confirm. It keeps watching for the rest of `poll_duration_s` and alerts again
+only if the best available slot changes. You need to be at the laptop at
+drop time; the bot buys you the seconds of searching, not the click.
 
 `book_mode: auto` (the default) is for venues with `captcha: off`.
 
@@ -135,6 +135,29 @@ If anything differs, edit `resy.py` only. Nothing else needs to change.
 
 ## 4. Run it
 
+### The easy way: menus
+
+```bash
+./resy
+```
+
+Arrow-key menus for everything: **Book a restaurant** (pick from the
+restaurant list, search all of Resy, or paste a link; then date, times and
+Go, with everything else defaulted), **My reservations** (booked, waiting, history;
+change / turn off / remove), **Practice run**, and **Settings & Resy login**. Edits are saved
+to `targets.yaml`.
+
+- **Runs in the background.** “Start the bot → In the background” keeps it
+  going after you close the terminal and keeps the Mac awake (`caffeinate`).
+  The menu shows whether it's running; “Bot: watch or stop it” to check in.
+  Keep the Mac plugged in with the lid open at drop time.
+- **Logs itself in.** Settings → “Log in with email & password” once. The
+  password goes in the macOS Keychain (never a file); when Resy's token
+  expires the bot logs in again on its own, even mid-drop.
+
+### Classic commands (still work)
+
+
 ```bash
 python -m resybot check            # zero risk: token OK? next drops? what's open now?
 python -m resybot run              # DRY RUN: full routine, stops before booking
@@ -184,7 +207,13 @@ resybot/
   resy.py      the ONLY file that talks to Resy   ← fix here when Resy changes
   ranker.py    picks the best slot (pure logic)
   sniper.py    wait → warm up → poll → rank → book → stop
-  notify.py    ntfy push
-  watcher.py   cancellation watcher (stub, phase 2)
-  cli.py       check / venue / run
+  notify.py    Mac notifications
+  watcher.py   books a released date (used when a Resy Notify email arrives)
+  resynotify.py  Resy Notify signups (sign up / list / cancel)
+  mailwatch.py   Gmail IMAP IDLE listener for Resy Notify emails
+  service.py   shared logic for every interface (parsing, checks, rule detection)
+  store.py     safe read/write of targets.yaml and .env
+  scheduler.py always-on loop behind `serve` and the menus
+  tui.py       the ./resy menus
+  cli.py       menu / serve / check / venue / run
 ```
